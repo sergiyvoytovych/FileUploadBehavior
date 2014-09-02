@@ -13,7 +13,7 @@
             'class' => 'application.extensions.image.CImageComponent',
             'driver'=>'GD',
         ),
- *
+ * don't forget add to your form 'htmlOptions'=>array('enctype'=>'multipart/form-data'),
  * example of use
  * пример использования
  public function behaviors()
