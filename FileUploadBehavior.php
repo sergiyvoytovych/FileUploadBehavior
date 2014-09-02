@@ -7,22 +7,25 @@
  * Date: 19.08.14
  * Time: 12:12
  *
- * you need implode image component in main.php and add extension CImageComponent  like this
-'image'=>array(
-    'class' => 'application.extensions.image.CImageComponent',
-    'driver'=>'GD',
-),
+ * if you want work with images need connect image component in main.php and add extension CImageComponent  like this
+ * http://www.yiiframework.com/extension/image
+        'image'=>array(
+            'class' => 'application.extensions.image.CImageComponent',
+            'driver'=>'GD',
+        ),
  *
+ * example of use
+ * пример использования
  public function behaviors()
     {
         return array(
             'Upload'=>array(
                 'class'=>'application.components.FileUploadBehavior',
-                'attribute'=>'image',
-                'fileAlias'=>'webroot.upload.good',
-                'returnAlias'=>'/upload/good/',
-                'types'=>'jpg, jpeg, png',
-                'defaultName'=>'no_image.jpg'
+                'attribute'=>'image',               // model attribute 
+                'fileAlias'=>'webroot.upload.good', //directory path for saving files
+                'returnAlias'=>'/upload/good/',     // return path
+                'types'=>'jpg, jpeg, png',          // type files
+                'defaultName'=>'no_image.jpg'       // default name if model save without file
             )
         );
     }
@@ -84,21 +87,21 @@ class FileUploadBehavior extends CActiveRecordBehavior
 
         if($file!==$this->defaultName){
             $dir = Yii::getPathOfAlias($this->fileAlias).DIRECTORY_SEPARATOR;
-            $images = glob($dir.'*'.$file);
-            $originalImage = $dir.$file;
-            foreach ($images as $image) {
+            $files = glob($dir.'*'.$file);
+            $originalFile = $dir.$file;
+            foreach ($files as $file) {
                 if ($this->deleteOriginal==true){
-                    @unlink($image);
+                    @unlink($file);
                 }else{
-                    if( $image != $originalImage){
-                        @unlink($image);
+                    if( $file != $originalFile){
+                        @unlink($file);
                     }
                 }
             }
         }
     }
 
-    //if file is image get this image
+    //if file is image you can get this image(see in the head and connect extension)
     public function getImage($width,$height,$crop=true)
     {
         $image = $this->owner->{$this->attribute};
